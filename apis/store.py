@@ -33,7 +33,7 @@ class StoreGetDeleteApi(MethodView):
     @staticmethod
     @blp.response(200, StoreDetailSchema)
     def get(store_id):
-        return Store.query.options(subqueryload(Store.items)).get_or_404(store_id)
+        return Store.query.get_or_404(store_id)
 
     @staticmethod
     @blp.arguments(StoreSchema)

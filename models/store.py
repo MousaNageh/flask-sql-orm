@@ -6,8 +6,8 @@ class Store(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    # lazy = 'dynamic'
-    items = db.relationship('Item', back_populates='store', cascade='all, delete')
+    items = db.relationship('Item', back_populates='store', cascade='all, delete', lazy='dynamic')
+    tags = db.relationship('Tag', back_populates='store', cascade='all, delete', lazy='dynamic')
 
     def __str__(self):
         return self.name

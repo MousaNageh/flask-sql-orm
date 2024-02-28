@@ -3,6 +3,7 @@ from flask import Flask
 from flask_smorest import Api
 from apis.store import blp as StoreBlueprint
 from apis.items import blp as ItemsBlueprint
+from apis.tag import blp as ItemBlueprint
 import models
 from db import db
 
@@ -25,4 +26,5 @@ def create_app(db_url=None):
     api = Api(app)
     api.register_blueprint(StoreBlueprint)
     api.register_blueprint(ItemsBlueprint)
+    api.register_blueprint(ItemBlueprint)
     return app

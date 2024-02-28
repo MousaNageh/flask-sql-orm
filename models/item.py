@@ -9,6 +9,7 @@ class Item(db.Model):
     price = db.Column(db.DECIMAL(precision=3), nullable=False)
     store_id = db.Column(db.Integer, db.ForeignKey('stores.id'), nullable=False)
     store = db.relationship('Store', back_populates='items')
+    tags = db.relationship("Tag", back_populates="items", secondary="items_tags", cascade='all, delete', lazy='dynamic')
 
     def __str__(self):
         return self.name
