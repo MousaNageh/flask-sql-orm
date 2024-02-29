@@ -48,9 +48,6 @@ class TagCreateGetDeleteApi(MethodView):
             abort(500, message=str(e))
 
 
-
-
-
 @blp.route("/<int:item_id>/<int:tag_id>")
 class TagAddRemoveToItemApi(MethodView):
 
