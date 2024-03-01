@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+
+  db:
+    container_name: flask_postgres
+    image: postgres:15.2-alpine3.17
+    env_file:
+      - .env
+    ports:
+      - "5562:5432"
+    volumes:
+      - ./db_backup:/var/lib/postgresql/data
+    restart: always
+
+
+  flask_app:
+    container_name: flask_app
+    tty: true
+    stdin_open: true
+    depends_on:
+      - db
+    build: .
+    volumes:
+      - .:/app
+    command: 
+      - sh
+      - -c
+      - |
+        flask db migrate &&
+        flask db upgrade &&
+        if [ "$$FLASK_DEBUG" = "0" ]; then
+          gunicorn app:app --threads 4 --timeout 240 --bind 0.0.0.0:5000 --reload --workers 3 --chdir /app/
+        else
+          flask run --host=0.0.0.0 --port=5000
+        fi
+    restart: always
+    expose:
+      - 5000
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env

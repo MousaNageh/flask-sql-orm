@@ -124,7 +124,7 @@ celerybeat-schedule
 *.sage.py
 
 # dotenv
-# .env
+.env
 
 # virtualenv
 .venv
@@ -155,9 +155,8 @@ media_email/
 # Ignore Django Migrations in Development if you are working on team
 
 # Only for Development only
-**/migrations/**
-!**/migrations
-!**/migrations/__init__.py
+**/migrations/versions/**
+!**/migrations/versions
 
 */static
 

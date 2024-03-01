@@ -10,25 +10,14 @@ import models
 from db import db
 from flask_jwt_extended import JWTManager
 from flask import jsonify
+from flask_migrate import Migrate
 
-def create_app(db_url=None):
+
+def create_app():
     app = Flask(__name__)
-    app.config["PROPAGATE_EXCEPTIONS"] = True
-    app.config["API_TITLE"] = "store apis"
-    app.config["API_VERSION"] = "v1"
-    app.config["OPENAPI_VERSION"] = "3.0.3"
-    app.config["OPENAPI_URL_PREFIX"] = "/"
-    app.config["OPENAPI_SWAGGER_UI_PATH"] = "/swagger"
-    app.config["OPENAPI_SWAGGER_UI_URL"] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-    app.config['SQLALCHEMY_DATABASE_URI'] = db_url or os.getenv('DATABASE_URL', "sqlite:///stores.db")
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_pyfile('config.py')
     db.init_app(app)
-    with app.app_context():
-        db.create_all()
-
-    app.config["JWT_SECRET_KEY"] = '149401121656696161763924947829797372853'
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
-    app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
+    Migrate(app, db)
     jwt = JWTManager(app)
 
     @jwt.expired_token_loader
@@ -93,3 +82,8 @@ def create_app(db_url=None):
     api.register_blueprint(ItemBlueprint)
     api.register_blueprint(UserBlueprint)
     return app
+
+#flask db init
+#flask db migrate
+#flask db init
+app = create_app()
